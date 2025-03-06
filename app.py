@@ -19,7 +19,7 @@ pyautogui.moveTo(520, 485, duration=1.5)
 pyautogui.click(button='left')
 pyautogui.typewrite("john.tan@sh-cogent.com.sg")
 pyautogui.press('tab')
-pyautogui.typewrite("Password")
+pyautogui.typewrite("IvyIvy2828")
 pyautogui.press('enter')
 time.sleep(1)
 
@@ -46,6 +46,8 @@ import pandas as pd
 import openpyxl
 import datetime, time, os
 from datetime import datetime, timedelta
+from tkinter import *
+from tkinter import ttk
 
 def remove_pdf_files_within_n_hours(n, path_pdf, end_with): 
     now = datetime.today()
@@ -114,6 +116,20 @@ def main():
         df_page.to_excel(writer_page, sheet_name='page', index=False)
 
     remove_pdf_files_within_n_hours(3, r"C:/Users/rpa.uat/Downloads/", "_merged.pdf")
+   
+    windw = Tk() #Create an instance of Tkinter frame
+    windw.geometry("550x290") #Set the geometry of Tkinter frame
+
+    def open_popup():
+        top= Toplevel(windw)
+        top.geometry("550x290")
+        top.title("CDAS Automation App")
+        Label(top, text= "Thank You!", font=('Mistral 28 bold')).place(x=150,y=80)
+
+    Label(windw, text="CDAS Automated Process Completed.", font=('Helvetica 15 bold')).pack(pady=20)
+    #Create a button in the main Window to open the popup
+    ttk.Button(windw, text= "Done", command= open_popup).pack()
+    windw.mainloop()
 
 from datetime import datetime, timedelta
 
@@ -153,6 +169,8 @@ def bill_process_code():
 
     btn_close=driver.find_element(By.XPATH, '/html/body/div[3]/div/div[2]/div[2]/div[3]/button[2]/span[2]/span')
     btn_close.click()
+    time.sleep(0.5)
+    pyautogui.press('pagedown')
     time.sleep(0.5)
     #login
 
@@ -351,7 +369,7 @@ def bill_process_code():
                     os.mkdir(fldr)
     
     list_bill_ref = []
-    for i in range(1, 2):
+    for i in range(1, 3):
         advanced_filter_calendar(driver)
         time.sleep(0.5)
         pyautogui.press('pagedown')
@@ -374,7 +392,8 @@ def bill_process_code():
             pyautogui.click(button='left')
             time.sleep(1)
         except Exception as e:
-            print(e)
+            #print(e)
+            time.sleep(0.5)
         try:
         
                 view = driver.find_element(By.XPATH, '//*[@id="q-app"]/div/div[2]/div/div[2]/div[3]/div[2]/table/tbody/tr['+str(i)+']/td[1]/button/span[2]')
