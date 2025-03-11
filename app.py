@@ -71,7 +71,8 @@ def remove_pdf_files_within_n_hours(n, path_pdf, end_with):
                     os.remove(file_path)
 
 
-
+global username
+username = 'rpa.uat'
 def main():
     def divide_by_25(n):
         """
@@ -81,9 +82,13 @@ def main():
         Returns:
             int: The whole number result of the division.
         """
-        return n // 25
-
-    path_page = "C:/Users/rpa.uat/Downloads/cdas_merged/"
+        return n // 25   
+   
+   
+    global username
+    username = 'rpa.uat' #get_username_date_to_download()[0]
+    
+    path_page = "C:/Users/"+username+"/Downloads/cdas_merged/"
     df_page = pd.read_excel(path_page+ r'cdas_page.xlsx', sheet_name='page', engine='openpyxl')
     current_page = df_page['current_page'][0]
     total_page = df_page['total_page'][0]
@@ -115,7 +120,7 @@ def main():
     with pd.ExcelWriter(path_page+ r'cdas_page.xlsx', engine='openpyxl') as writer_page:
         df_page.to_excel(writer_page, sheet_name='page', index=False)
 
-    remove_pdf_files_within_n_hours(3, r"C:/Users/rpa.uat/Downloads/", "_merged.pdf")
+    remove_pdf_files_within_n_hours(3, r"C:/Users/"+username+r"Downloads/", "_merged.pdf")
    
     windw = Tk() #Create an instance of Tkinter frame
     windw.geometry("550x290") #Set the geometry of Tkinter frame
@@ -148,14 +153,61 @@ def bill_process_code():
         time.sleep(0.5)
 
 
+    import datetime
+    import tkinter as tk
+    from tkinter import ttk
+
     def yesterday(frmt='%Y%m%d', string=True):
-        yesterday = datetime.now() - timedelta(1)
+        yesterday = datetime.datetime.now() - timedelta(1)
         yesterday_day = yesterday.day
         #yesterday_month = yesterday.month
         return yesterday_day
 
-    date_to_download = str(yesterday(frmt='%Y%m%d', string=True))
+    
+    def get_username_date_to_download():
+        window = tk.Tk()
+        window.title("CDAS User Input")
 
+        input_labels = ["Username", "Date_To_Download yyyymmdd"]
+        for i, label in enumerate(input_labels):
+            ttk.Label(window, text=label).grid(row=0, column=i, padx=10, pady=5, sticky='s')
+
+        entries = {'username': [], 'date_to_download': []} #, 'start_time': [], 'finish_time': []
+        list_username_date_to_download =[]
+
+        def get_user_input():
+            for row in range(len(entries['username'])):
+                username = entries['username'][row].get()
+                date_to_download = entries['date_to_download'][row].get()
+                #start_time = entries['start_time'][row].get()
+                #finish_time = entries['finish_time'][row].get()
+                #print(f"{username}, {date_to_download}") #{start_time}, {finish_time}")
+
+        for row in range(1, 2):
+            username_var = tk.StringVar()
+            username_entry = ttk.Entry(window, textvariable=username_var)
+            username_entry.grid(row=row, column=0, padx=10, pady=5)
+            entries['username'].append(username_var)
+
+            date_to_download_var = tk.StringVar()
+            date_to_download_entry = ttk.Entry(window, textvariable=date_to_download_var)
+            date_to_download_entry.grid(row=row, column=1, padx=10, pady=5)
+            entries['date_to_download'].append(date_to_download_var)
+
+        submit_button = tk.Button(window, text="Submit", command=get_user_input)
+        submit_button.grid(row=14, column=0, columnspan=2, pady=10)
+
+        window.mainloop()
+        list_username_date_to_download.append(entries['username'][0].get())
+        list_username_date_to_download.append(entries['date_to_download'][0].get())
+        
+        return list_username_date_to_download
+
+    #date_to_download = str(yesterday(frmt='%Y%m%d', string=True))
+    date_to_download = str(get_username_date_to_download()[1][-2:])
+    #print(date_to_download)
+    time.sleep(2)
+    
     idx_to_click = str(int(date_to_download) + 6)
     x_path_date = '/html/body/div[3]/div/div[2]/div[1]/div/div[3]/div/div['+idx_to_click+']/button/span[2]/span'
 
@@ -202,7 +254,7 @@ def bill_process_code():
             # Save to the picture file
             mss.tools.to_png(sct_img.rgb, sct_img.size, output=path_output)
 
-    path_output = "C:/Users/rpa.uat/Downloads/cdas_merged/screenshot.png"
+    path_output = r"C:/Users/"+username+r"/Downloads/cdas_merged/screenshot.png"
     
     from PIL import Image
     import pytesseract
@@ -359,7 +411,7 @@ def bill_process_code():
         except Exception as e:
                 return f"Error: An unexpected error occurred - {str(e)}"
 
-    username = 'rpa.uat'
+    #username = 'rpa.uat'
     path_pdf = r"C:/Users/"+ username+ r"/Downloads/" ##len(list_invoice_date)
     fldr = path_pdf+ r"cdas_merged/"
     if os.path.isdir(fldr):
@@ -442,6 +494,8 @@ def bill_process_code():
                 print(e)
                 break
 
+        
+        
     #run
 
 if __name__ == "__main__":
