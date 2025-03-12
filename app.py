@@ -19,7 +19,7 @@ pyautogui.moveTo(520, 485, duration=1.5)
 pyautogui.click(button='left')
 pyautogui.typewrite("john.tan@sh-cogent.com.sg")
 pyautogui.press('tab')
-pyautogui.typewrite("IvyIvy2828")
+pyautogui.typewrite(")
 pyautogui.press('enter')
 time.sleep(1)
 
