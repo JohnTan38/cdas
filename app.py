@@ -17,7 +17,7 @@ time.sleep(3)
 import pyautogui
 pyautogui.moveTo(520, 485, duration=1.5)
 pyautogui.click(button='left')
-pyautogui.typewrite("john.tan@sh-cogent.com.sg")
+pyautogui.typewrite("")
 pyautogui.press('tab')
 pyautogui.typewrite(")
 pyautogui.press('enter')
