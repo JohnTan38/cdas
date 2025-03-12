@@ -9,7 +9,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 driver = webdriver.Chrome()
-#driver.get("https://az3.ondemand.esker.com/ondemand/webaccess/asf/home.aspx")
+
 driver.get("https://invoice.eservices.cdas.link/login")
 driver.maximize_window()
 time.sleep(3)
